@@ -13,6 +13,7 @@
 
 load("@score_docs_as_code//:docs.bzl", "docs")
 load("@score_tooling//:defs.bzl", "cli_helper", "copyright_checker", "dash_license_checker", "setup_starpls", "use_format_targets")
+load("@rules_rpm//rpm:defs.bzl", "rpm_package")
 load("//:project_config.bzl", "PROJECT_CONFIG")
 
 # Creates all documentation targets:
@@ -103,4 +104,17 @@ test_suite(
     name = "bm_kvs_cpp",
     tests = ["//src/cpp/tests:bm_kvs_cpp"],
     visibility = ["//visibility:public"],
+)
+
+rpm_package(
+    name = "persistency-devel",
+    libraries = [
+        "//src/cpp/src:kvs_cpp",
+    ],
+    binaries = [
+        "//src/rust/rust_kvs_tool:kvs_tool",
+    ],
+    version = "1.0.0",
+    summary = "Persistency KVS library and tools",
+    description = "Key-Value Store library and command-line tool for persistent data storage",
 )
