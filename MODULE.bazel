@@ -65,6 +65,22 @@ register_toolchains(
     dev_dependency = True,
 )
 
+git_override(
+    module_name = "os_autosd",
+    remote = "https://github.com/bilelmoussaoui/inc_os_autosd",
+    branch = "bilelmoussaoui/toolchain",
+ )
+
+bazel_dep(name = "os_autosd", version = "1.0.0")
+
+autosd_10_gcc = use_extension("@os_autosd//toolchain/autosd_10_gcc:extensions.bzl", "autosd_10_gcc_extension")
+autosd_10_gcc.configure(
+    c_flags = ["-Wall", "-Wno-error=deprecated-declarations", "-Wno-error=maybe-uninitialized", "-fPIC"],
+    cxx_flags = ["-Wall", "-Wno-error=deprecated-declarations", "-Wno-error=maybe-uninitialized", "-fPIC"],
+)
+
+use_repo(autosd_10_gcc, "autosd_10_gcc_repo")
+
 ## Bazel registry
 # Module dependencies
 bazel_dep(name = "googletest", version = "1.17.0.bcr.1")
@@ -132,10 +148,9 @@ git_override(
 )
 
 # ToDo: `-`version needed still because of indirect dependency
-bazel_dep(name = "score-baselibs", version = "", dev_dependency = True)
 git_override(
-    module_name = "score-baselibs",
-    commit = "06a27a163a2aa787e1b99f6b04feb00b413b3355",
+    module_name = "score_baselibs",
+    commit = "8d556711421cbdd804dffee049967fa5061ca2ea",
     remote = "https://github.com/eclipse-score/baselibs.git",
 )
 
